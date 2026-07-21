@@ -1,0 +1,184 @@
+# inboxrow marketing site — handoff memory
+
+Read this cold to resume. Status: **BUILT, not deployed.** Built July 2026.
+Goal: a single-page, invite-only marketing site for inboxrow that drives
+"Request access" requests. Not self-serve, no pricing page, no sign-up.
+
+Dir `/Users/pranavkumar/Downloads/inboxrow-site`. GitHub `pranavkumar25/inboxrow-site`
+(**PUBLIC**), branch `main`. gh CLI logged in as `pranavkumar25`.
+Dev: `npm run dev` (has been running on :5199). Build: `npm run build` → `dist/`.
+
+Source copy: `~/Downloads/InboxRow-Landing-Copy.md`. Palette PDF:
+`~/Desktop/inboxrow-palette.pdf`. Brand SVGs came from
+`~/Desktop/inboxrow logo.svg` and `~/Desktop/inboxrow icon:favicon.svg`.
+
+Separate from the product app at `/Users/pranavkumar/inboxrow` (Next.js,
+`gmail-campaigns`). **The app was never edited** — read-only reference only.
+
+---
+
+## LOCKED DECISIONS
+
+1. **Brand name is always lowercase.** `inboxrow`, never `InboxRow`. Labels
+   use `text-transform: uppercase`, so anywhere the name sits inside one it
+   opts out with `normal-case` (footer copyright, comparison-table headers,
+   the cost panel label). Enforced across copy, `<title>`, and meta.
+
+2. **Palette, byte-identical.** `#FF4835` red · `#35ABFF` blue · `#FCFCFC`
+   white · `#101014` black. Roles are **inherited from the product app's**
+   `src/app/tokens.css` so a visitor who becomes a user never relearns what a
+   colour means:
+   - **Blue is the interface accent** — primary CTA, focus ring, state, links.
+   - **Red is the wordmark, the single hero moment, and danger only.** In the
+     app, `--signal` red encodes "exited the funnel" / "danger", so spending
+     it on ordinary accents would make the marketing site read as errors. It
+     appears in exactly two places: the wordmark, and the highlight behind
+     "row" in the hero.
+
+3. **Inter only.** Loaded from rsms.me, `InterVariable` behind an
+   `@supports (font-variation-settings: normal)` check. No monospace, no
+   second family. The technical feel of `.tag` labels comes from 0.06em
+   tracking + uppercase, not a second typeface.
+
+4. **Two font weights, each with one job.** `400` running text, `600`
+   headings / UI labels / emphasis. Inter Variable will happily render 540 or
+   590 — an earlier pass had SEVEN weights in use, which is how a page stops
+   looking decided. Do not reintroduce a third.
+
+5. **One canvas colour.** Every section is `#FCFCFC`. No section is separated
+   by a background change — structure comes from hairline rules, a continuous
+   framed column (`max-w-[1280px]`, `border-x`), and a sticky label rail. The
+   only contrast moment on the page is the ink request-access panel.
+
+6. **The row is the design atom.** Tagline is "earn a row in the inbox," so
+   inbox rows, mailbox counts, volume bars, steps, audiences and FAQ entries
+   are all the same horizontal element at different scales. The product app
+   independently owns this metaphor (`RowMeter`, `RowBreakdown`,
+   `funnelFromStatuses`, a `--funnel-*` scale).
+
+7. **No em dashes or en dashes anywhere.** The source markdown leaned on them
+   heavily; each was rewritten into a real sentence, comma or colon rather
+   than swapped for another glyph. Apostrophes are curly (`’`). Keep this in
+   mind when editing `src/content/site.ts`.
+
+8. **Copy rules from the brief.** Every CTA is *Request access* (invite-only,
+   never "Sign up"). **No open/click/reply stats anywhere** — bot-inflated.
+   Volume and cost numbers ARE the pitch. **Never imply warm-up can be
+   skipped**; the differentiator is volume per warmed mailbox.
+
+---
+
+## STACK & STRUCTURE
+
+React 19 · TypeScript · Vite · Tailwind CSS v4 · shadcn/ui (Radix) · Heroicons
+24/outline (same family + native 1.5 stroke as the app; `lucide-react` was
+removed, including the accordion chevron).
+
+```
+src/
+  content/site.ts        ALL copy — edit here, never in components
+  index.css              every design token
+  assets/                logo.svg + mark.svg (imported as modules, not /public)
+  components/
+    primitives.tsx       Frame / Section / Heading / Lede / Footnote
+    icons.tsx            Heroicons map + Wordmark + Mark
+    sections/            one file per section, composed in App.tsx
+    ui/                  shadcn: accordion, button, input, label, textarea
+  lib/utils.ts           cn() with extendTailwindMerge — see gotchas
+```
+
+Sections in order: Hero · Problem · Difference · Volume · Cost · How it works ·
+Features · Who it's for · FAQ · Request access · Footer.
+
+Logo/mark are **imported as ES modules, not served from `/public`**, so the
+bundler fingerprints them and no stray file can shadow the name. The favicon
+is inlined as a data URI in `index.html` for the same reason. (This mattered:
+something outside the session twice overwrote `public/` with another
+project's assets.)
+
+---
+
+## THREE GOTCHAS THAT WILL BITE AGAIN
+
+1. **tailwind-merge silently deletes the type scale.** The roles
+   (`text-body`, `text-lead`, …) are custom theme values, so twMerge reads
+   them as *colour* utilities and drops them when a class string also holds
+   `text-muted-foreground`. `src/lib/utils.ts` registers them via
+   `extendTailwindMerge`. **Add any new role there too** or it will vanish at
+   runtime with no error.
+
+2. **Tailwind v4 has no `--duration-*` theme namespace.** `duration-fast`
+   compiles to *nothing at all*, silently. Components must use
+   `duration-[var(--duration-fast)]`.
+
+3. **The focus ring must stay UNLAYERED.** shadcn ships `outline-none` as a
+   utility; utilities live in a cascade layer, so the same rule inside
+   `@layer base` loses and the ring disappears with no warning. The rule sits
+   at the very bottom of `index.css`, outside any layer, with `!important`.
+
+---
+
+## DESIGN TOKENS (all in src/index.css)
+
+- **Type roles:** `text-micro` 11 · `caption` 12 · `small` 13 · `body` 15 ·
+  `h3` 17 · `lead` 17→19 · `h2` / `h2-lg` / `stat` / `display` fluid clamps.
+  Nothing on the page uses an arbitrary `text-[…]` value.
+- **Radius:** 10px controls/cards, 16px the one panel (matches the app).
+- **Motion:** `--duration-fast` 120ms (hover/press) · `--duration-base` 160ms
+  (overlays/disclosure) · `--duration-slow` 400ms (the one orchestrated
+  mount), all on `cubic-bezier(0.2, 0, 0, 1)`. No scroll-triggered reveals
+  anywhere — content is never gated on JS or motion.
+- **Focus:** accent at 55%, 2px, 2px offset. Identical to the app.
+
+---
+
+## KNOWN ISSUE — CTA CONTRAST (decide this)
+
+Primary CTAs are white on `#35ABFF` = **2.49:1**. That fails WCAG AA (needs
+4.5:1 for this text size; even the lenient 3:1 UI threshold misses). White-on-
+accent-500 was chosen deliberately to match the app, which ships the same
+pair. Three ways out, all keeping both brand hexes exact:
+
+1. Darken the fill to `accent-700` `#1478C4`, label stays white → **4.74:1**.
+2. Keep `#35ABFF`, set the label in ink → **7.6:1** (what it was before).
+3. Accept it, consistent with the app.
+
+The app has the same defect in `src/components/ui/primitives.tsx` (`primary`
+variant) and is worth fixing there too.
+
+---
+
+## NOT WIRED UP
+
+- **The access form has no backend.** `sections/request-access.tsx` fakes a
+  650ms round trip then shows the success panel. Point it at a form endpoint
+  or Calendly handoff — marked with a `// No backend wired up yet` comment.
+- `#privacy`, `#contact`, and "Book 15 min" are placeholder anchors.
+- **Numbers to verify before publishing:** Google Workspace price/seat, domain
+  cost, the 1,500/day safe cap, and **inboxrow's own price — the copy never
+  states it.**
+- The "~85% less" badge in the cost section is derived from the $1,500 vs $230
+  figures, not from the source copy. Confirm you're happy claiming it.
+- The hero inbox artifact uses invented correspondents and is labelled
+  "Illustrative". **Better option: rebuild it from the real app UI** (RowMeter
+  / funnel / tables) — that would remove the last fabricated element.
+- Not deployed anywhere. No CI, no hosting configured.
+
+---
+
+## TENSION WORTH RESOLVING
+
+The product app's funnel is built around **opened / clicked**, but the landing
+brief bans those stats as bot-inflated. Both can be right — internal
+diagnostics vs external claims — but decide it deliberately rather than by
+accident.
+
+---
+
+## NEXT STEPS WHEN RESUMED
+
+1. Decide the CTA contrast option above.
+2. Wire the access form to a real endpoint.
+3. Add inboxrow's price to the copy, or decide to keep it off the page.
+4. Deploy (Vercel/Netlify — it's a static `dist/`).
+5. Optional: replace the hero artifact with the real product UI.
