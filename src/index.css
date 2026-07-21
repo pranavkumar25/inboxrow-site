@@ -1,0 +1,299 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/* ─────────────────────────────────────────────────────────────────
+   inboxrow marketing site.
+   Colour roles are inherited from the product's src/app/tokens.css so a
+   visitor who becomes a user never has to relearn what a colour means.
+   ───────────────────────────────────────────────────────────────── */
+:root {
+  /* ── Brand set, byte-identical to the palette and to ~/inboxrow ──────
+   * #FF4835 logo red · #35ABFF interface blue · #FCFCFC white · #101014 black
+   *
+   * Role assignment is taken from the product's token file so the site and
+   * the app say the same thing with the same colour:
+   *   blue  = the interface accent. Actions, state, focus, data.
+   *   red   = the logo, and the single loudest brand moment. Nothing else.
+   * In the app, red also means "exited the funnel" and "danger", which is
+   * why it is not spent on ordinary accents here.
+   */
+
+  /* Accent ramp (from the app's tokens.css) */
+  --accent-50: #eff7ff;
+  --accent-200: #b8dfff;
+  --accent-500: #35abff; /* brand blue */
+  --accent-600: #1d93e8;
+  --accent-700: #1478c4; /* accent as text: 4.7:1 on canvas */
+
+  /* Brand red. Logo, the hero moment, and danger. */
+  --signal-500: #ff4835; /* brand red */
+  --danger-text: #ba200f; /* the app's danger text tone */
+
+  --canvas: #fcfcfc;
+  --ink: #101014;
+
+  /* Radius by role, matching the app: 10px controls and cards, a larger
+     step for the one panel that behaves like a window. */
+  --r-input: 10px;
+  --r-card: 10px;
+  --r-panel: 16px;
+  --radius: 0.625rem; /* shadcn base; roles above override it */
+
+  /* Motion, matching the app: hover/press 120ms, overlays 160ms, one curve. */
+  --t-fast: 120ms;
+  --t-base: 160ms;
+  --t-slow: 400ms; /* one-time chart mounts, as in the app */
+  --ease-out: cubic-bezier(0.2, 0, 0, 1);
+
+  /* Every section shares --background. Depth comes from hairlines and
+     raised white surfaces, never from a different section colour. */
+  --background: #fcfcfc;
+  --foreground: #101014;
+  --card: #ffffff;
+  --card-foreground: #101014;
+  --popover: #ffffff;
+  --popover-foreground: #101014;
+  --primary: #101014;
+  --primary-foreground: #fcfcfc;
+  --secondary: #f2f2f3;
+  --secondary-foreground: #101014;
+  --muted: #f2f2f3;
+  --muted-foreground: #61616b;
+  --accent: #35abff;
+  --accent-foreground: #101014;
+  --destructive: #ba200f;
+  --border: #e7e7e9;
+  --input: #e7e7e9;
+  --ring: #35abff;
+
+  /* hairline + a second, fainter rule for interior grid lines */
+  --hairline: #e7e7e9;
+  --hairline-soft: #efeff1;
+}
+
+.dark {
+  --background: #0b0b0e;
+  --foreground: #fcfcfc;
+  --card: #141419;
+  --card-foreground: #fcfcfc;
+  --popover: #141419;
+  --popover-foreground: #fcfcfc;
+  --primary: #fcfcfc;
+  --primary-foreground: #101014;
+  --secondary: #1b1b21;
+  --secondary-foreground: #fcfcfc;
+  --muted: #1b1b21;
+  --muted-foreground: #a0a0ab;
+  --accent: #35abff;
+  --accent-foreground: #101014;
+  --destructive: #ff7a6b;
+  --border: #232329;
+  --input: #2b2b33;
+  --ring: #35abff;
+  --accent-700: #7cc7ff;
+  --hairline: #232329;
+  --hairline-soft: #1b1b21;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --color-accent-50: var(--accent-50);
+  --color-accent-200: var(--accent-200);
+  --color-accent-500: var(--accent-500);
+  --color-accent-600: var(--accent-600);
+  --color-accent-700: var(--accent-700);
+  --color-signal: var(--signal-500);
+  --color-danger-text: var(--danger-text);
+  --color-ink: var(--ink);
+  --color-canvas: var(--canvas);
+  --color-hairline: var(--hairline);
+  --color-hairline-soft: var(--hairline-soft);
+
+  --radius-sm: var(--r-input);
+  --radius-md: var(--r-input);
+  --radius-lg: var(--r-card);
+  --radius-xl: var(--r-panel);
+
+  /* Motion, named. Components use duration-fast/base/slow, never a number. */
+  --duration-fast: 120ms; /* hover, press */
+  --duration-base: 160ms; /* overlays, disclosure */
+  --duration-slow: 400ms; /* the one orchestrated mount */
+  --ease-quiet: cubic-bezier(0.2, 0, 0, 1);
+
+  --font-sans: InterVariable, Inter, ui-sans-serif, system-ui, sans-serif;
+
+  /* Type scale. Every size on the page is one of these roles; nothing
+     reaches for an arbitrary value. */
+  --text-micro: 0.6875rem; /* 11px  eyebrows, rail labels, field labels */
+  --text-micro--line-height: 1;
+  --text-caption: 0.75rem; /* 12px  meta, footnote labels */
+  --text-caption--line-height: 1.4;
+  --text-small: 0.8125rem; /* 13px  secondary body, table cells */
+  --text-small--line-height: 1.55;
+  --text-body: 0.9375rem; /* 15px  default body */
+  --text-body--line-height: 1.6;
+  --text-h3: 1.0625rem; /* 17px  card and row titles */
+  --text-h3--line-height: 1.3;
+  --text-lead: clamp(1.0625rem, 1.3vw, 1.1875rem); /* section ledes */
+  --text-lead--line-height: 1.6;
+  --text-h2: clamp(1.875rem, 3.6vw, 2.75rem);
+  --text-h2--line-height: 1.05;
+  --text-h2-lg: clamp(2.125rem, 4.6vw, 3.5rem);
+  --text-h2-lg--line-height: 1.04;
+  --text-stat: clamp(2.5rem, 6vw, 3.75rem);
+  --text-stat--line-height: 1;
+  --text-display: clamp(3rem, 8.4vw, 6.5rem);
+  --text-display--line-height: 0.96;
+
+  --shadow-raise:
+    0 1px 2px rgba(16, 16, 20, 0.04), 0 8px 24px -16px rgba(16, 16, 20, 0.18);
+  --shadow-float:
+    0 2px 4px rgba(16, 16, 20, 0.04), 0 24px 48px -24px rgba(16, 16, 20, 0.24);
+}
+
+@layer base {
+  :root {
+    font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+    font-feature-settings:
+      "liga" 1,
+      "calt" 1; /* fix for Chrome */
+  }
+  @supports (font-variation-settings: normal) {
+    :root {
+      font-family: InterVariable, ui-sans-serif, system-ui, sans-serif;
+    }
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  /* Selection reads as a brand swatch, as it does in the app. */
+  ::selection {
+    background: var(--accent-200);
+    color: var(--ink);
+  }
+
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 6rem;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
+  p {
+    text-wrap: pretty;
+  }
+
+  /* data never jitters */
+  table td,
+  table th,
+  .tnum {
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+@layer components {
+  /* The technical label that opens every block: `01 / THE PROBLEM`.
+     Inter only; the technical feel comes from tracking and case, not
+     from a second typeface. */
+  .tag {
+    font-size: var(--text-micro);
+    font-weight: 600;
+    letter-spacing: 0.06em; /* the app's `tracking-eyebrow` */
+    text-transform: uppercase;
+    line-height: 1;
+  }
+
+  /*
+   * Two weights only, each with one job:
+   *   400 — every running text.
+   *   600 — headings, UI labels, and emphasis inside body copy.
+   * Inter Variable would happily render 540 or 590; picking a different
+   * one per component is how a page stops looking decided.
+   */
+  .display {
+    font-weight: 600;
+    letter-spacing: -0.045em;
+  }
+  .heading {
+    font-weight: 600;
+    letter-spacing: -0.035em;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/* Thin, light scrollbars, matching the app's console feel. */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #dddddd transparent;
+}
+*::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+*::-webkit-scrollbar-thumb {
+  background: #dddddd;
+  border-radius: 9999px;
+  border: 2px solid var(--canvas);
+}
+*::-webkit-scrollbar-thumb:hover {
+  background: #979799;
+}
+
+/*
+ * One focus treatment, everywhere. Left UNLAYERED on purpose: shadcn ships
+ * `outline-none` as a utility, and utilities live in a cascade layer, so a
+ * rule inside @layer base loses to it and the ring silently disappears.
+ * Unlayered CSS outranks every layer, so this always wins.
+ */
+:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--accent-600) 55%, transparent) !important;
+  outline-offset: 2px;
+  border-radius: 3px;
+}
+/* ...and drop the framework's competing ring so states never double up. */
+:focus-visible {
+  --tw-ring-shadow: 0 0 #0000;
+}
