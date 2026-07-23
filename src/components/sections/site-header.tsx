@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Wordmark } from "@/components/icons"
-import { brand, nav } from "@/content/site"
+import { brand, loginUrl, nav } from "@/content/site"
 import { GUTTER } from "@/components/primitives"
 import { cn } from "@/lib/utils"
 
@@ -53,15 +53,16 @@ export function SiteHeader() {
             <Wordmark className="h-[18px] w-auto" />
           </a>
 
-          {/* invite-only is the whole positioning, so state it in the chrome */}
-          <span className="tag hidden items-center gap-1.5 rounded-full border border-hairline px-2.5 py-1.5 text-muted-foreground sm:inline-flex">
+          {/* invite-only is the whole positioning, so state it in the chrome.
+              Hidden once the nav appears (md) so the two never crowd the bar. */}
+          <span className="tag hidden items-center gap-1.5 rounded-full border border-hairline px-2.5 py-1.5 text-muted-foreground sm:inline-flex md:hidden lg:inline-flex">
             <span className="size-1.5 rounded-full bg-accent-500" />
             Invite&nbsp;only
           </span>
 
           <nav
             aria-label="Primary"
-            className="ml-auto hidden items-center lg:flex"
+            className="hidden items-center md:ml-auto md:flex"
           >
             {nav.map((item) => (
               <a
@@ -74,14 +75,22 @@ export function SiteHeader() {
             ))}
           </nav>
 
-          <Button
-            asChild
-            variant={heroCtaVisible ? "secondary" : "primary"}
-            size="cta"
-            className="ml-auto lg:ml-5"
-          >
-            <a href="#request-access">{brand.ctaLabel}</a>
-          </Button>
+          {/* Existing users log in; everyone else requests access. */}
+          <div className="ml-auto flex items-center gap-1 sm:gap-3 md:ml-5">
+            <a
+              href={loginUrl}
+              className="inline-flex min-h-11 items-center rounded-md px-2.5 text-small font-normal whitespace-nowrap text-muted-foreground transition-colors hover:text-foreground sm:px-3"
+            >
+              {brand.loginLabel}
+            </a>
+            <Button
+              asChild
+              variant={heroCtaVisible ? "secondary" : "primary"}
+              size="cta"
+            >
+              <a href="#request-access">{brand.ctaLabel}</a>
+            </Button>
+          </div>
         </div>
       </div>
     </header>

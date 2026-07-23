@@ -1,6 +1,39 @@
 import { Footnote, Heading, Lede, Section } from "@/components/primitives"
+import { Icon } from "@/components/icons"
 import { cost } from "@/content/site"
 import { cn } from "@/lib/utils"
+
+/**
+ * The exact cost is invite-only: a blurred, unreadable figure sits behind a
+ * lock that scrolls to the request-access form. Curiosity → a lead.
+ */
+function LockedCost() {
+  return (
+    <a
+      href="#request-access"
+      className="group mt-5 inline-flex items-center gap-3 rounded-full border border-hairline bg-background py-2 pr-4 pl-2.5 transition-colors hover:border-accent-500/50"
+    >
+      <span className="inline-flex items-center gap-1.5 rounded-full bg-accent-500/10 px-2.5 py-1 text-accent-700">
+        <Icon name="lock" className="size-3.5" />
+        {/* A real-looking but deliberately unreadable figure — you can tell a
+            number is there, you just can't read it without asking. */}
+        <span
+          aria-hidden="true"
+          className="tnum select-none text-body font-semibold blur-[5px]"
+        >
+          ~$1XX
+        </span>
+      </span>
+      <span className="text-small font-semibold text-foreground">
+        {cost.reveal.cta}
+      </span>
+      <Icon
+        name="arrow-right"
+        className="size-4 text-muted-foreground transition-transform group-hover:translate-x-0.5"
+      />
+    </a>
+  )
+}
 
 export function Cost() {
   return (
@@ -30,15 +63,13 @@ export function Cost() {
         </div>
         <div className="relative border-t border-hairline p-7 sm:border-t-0 sm:border-l lg:p-9">
           <p className="tag normal-case text-accent-700">inboxrow</p>
-          <p className="tnum mt-4 flex flex-wrap items-baseline gap-x-4 text-stat leading-none font-semibold tracking-[-0.045em]">
-            ~$150
-            <span className="tag rounded-full border border-accent-500/40 px-2.5 py-1.5 text-accent-700">
-              ~90% less
-            </span>
+          <p className="tnum mt-4 flex flex-wrap items-baseline gap-x-4 text-stat leading-none font-semibold tracking-[-0.045em] text-accent-700">
+            {cost.reveal.savings}
           </p>
           <p className="mt-3 text-body text-muted-foreground">
-            infrastructure per year. The software rides on your own email setup.
+            {cost.reveal.locked}.
           </p>
+          <LockedCost />
         </div>
       </div>
       <div className="mt-12 overflow-x-auto">
@@ -75,7 +106,17 @@ export function Cost() {
                   {row.others}
                 </td>
                 <td className="py-4 pr-6 text-body font-semibold">
-                  {row.ours}
+                  {row.locked ? (
+                    <a
+                      href="#request-access"
+                      className="inline-flex items-center gap-1.5 rounded-full bg-accent-500/10 px-2.5 py-1 text-accent-700 transition-colors hover:bg-accent-500/20"
+                    >
+                      <Icon name="lock" className="size-3.5" />
+                      {row.ours}
+                    </a>
+                  ) : (
+                    row.ours
+                  )}
                 </td>
               </tr>
             ))}
