@@ -18,6 +18,45 @@ export const brand = {
   name: "inboxrow",
   tagline: "Earn a row in the inbox.",
   ctaLabel: "Request access",
+  loginLabel: "Log in",
+} as const
+
+/**
+ * Where the "Log in" link sends existing users. Placeholder for now — change
+ * this one line to your real app URL when it's live.
+ */
+export const loginUrl = "https://app.inboxrow.com"
+
+/**
+ * Form → email delivery, via Web3Forms (no backend needed).
+ *
+ * Submissions are emailed to BOTH inboxes below. Web3Forms' free plan sends
+ * to the single address tied to each access key, so multi-recipient here works
+ * by giving each inbox its OWN free key — the form is submitted once per key.
+ * (Web3Forms' built-in CC is a paid Pro feature; two free keys avoids that.)
+ *
+ * SETUP (a couple of minutes, one time) — for EACH recipient below:
+ *   1. Go to https://web3forms.com, enter that recipient's email address, and
+ *      copy the access key they send to it.
+ *   2. Paste it as that recipient's `accessKey`, replacing the placeholder.
+ * After that, every "Request access" submission is emailed to both inboxes
+ * with the person's name, work email, company, and what they're sending.
+ *
+ * The access keys are safe to keep in client code (that's how Web3Forms is
+ * designed); a key only lets a form email its own chosen inbox.
+ */
+export const forms = {
+  subject: "New inboxrow access request",
+  recipients: [
+    {
+      email: "pranav.kumar@inboxrow.com",
+      accessKey: "YOUR_WEB3FORMS_ACCESS_KEY_FOR_INBOXROW",
+    },
+    {
+      email: "pk@pranavkumar.co",
+      accessKey: "YOUR_WEB3FORMS_ACCESS_KEY_FOR_PRANAVKUMAR",
+    },
+  ],
 } as const
 
 export const nav = [
@@ -160,24 +199,33 @@ export const cost = {
   emphasis: "30,000 emails a month",
   pullquote: "One domain. Three inboxes. Done.",
   columns: ["30,000 emails / month", "Other cold-email tools", "inboxrow"],
+  // The headline stat visitors get for free is the *saving* (~90% less). The
+  // exact dollar figure is invite-only, so it never ships in the bundle — a
+  // "reveal" prompts them to request access instead. That's the lead.
+  reveal: {
+    savings: "~90% less",
+    caption: "infrastructure per year. The software rides on your own email setup.",
+    locked: "Request access to see your exact number",
+    cta: "Reveal your cost",
+  },
   rows: [
-    { label: "Domains", others: "~7", ours: "1", badge: null },
-    { label: "Mailboxes", others: "~20", ours: "3", badge: null },
+    { label: "Domains", others: "~7", ours: "1", locked: false },
+    { label: "Mailboxes", others: "~20", ours: "3", locked: false },
     {
       label: "Infra / year",
       others: "~$1,500",
-      ours: "~$150",
-      badge: "~90% less",
+      ours: "~90% less",
+      locked: true,
     },
     {
       label: "Software fee",
       others: "On top, per mailbox",
       ours: "Rides on your own email setup",
-      badge: null,
+      locked: false,
     },
   ],
   footnote:
-    "Math: domains ~$12/yr each + mailbox hosting ~$4 to $6/mailbox/mo. Other tools stack a per-mailbox software fee on top.",
+    "Your only spend is domains and mailbox hosting — no per-mailbox software fee stacked on top. We'll price your exact setup when you request access.",
 } as const
 
 export const howItWorks = {
@@ -316,6 +364,8 @@ export const finalCta = {
   reassurance: "Invite-only. We reply within one business day.",
   successTitle: "Request received.",
   successBody: "We’ll email you shortly to set up your mailboxes.",
+  errorTitle: "That didn’t go through.",
+  errorBody: "Something went wrong sending your request. Please try again, or email us directly.",
 } as const
 
 export const footer = {
@@ -327,6 +377,7 @@ export const footer = {
     { label: "Cost", href: "/#cost" },
     { label: "FAQ", href: "/#faq" },
     { label: "Request access", href: "/#request-access" },
+    { label: brand.loginLabel, href: loginUrl },
     { label: "Privacy", href: "/privacy" },
     { label: "Terms", href: "/terms" },
   ],

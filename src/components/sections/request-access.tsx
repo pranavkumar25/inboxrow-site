@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Icon } from "@/components/icons"
-import { brand, finalCta } from "@/content/site"
+import { brand, finalCta, forms } from "@/content/site"
 import { cn } from "@/lib/utils"
 
 type FieldName = "name" | "email" | "company"
@@ -36,7 +36,9 @@ const inputTone =
 export function RequestAccess() {
   const formRef = useRef<HTMLFormElement>(null)
   const [errors, setErrors] = useState<Errors>({})
-  const [status, setStatus] = useState<"idle" | "sending" | "sent">("idle")
+  const [status, setStatus] = useState<
+    "idle" | "sending" | "sent" | "error"
+  >("idle")
 
   /** Validate on blur, then live once a field is already showing an error. */
   const handleBlur =
@@ -55,7 +57,7 @@ export function RequestAccess() {
       )
     }
 
-  const onSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     const data = new FormData(e.currentTarget)
 
@@ -75,8 +77,32 @@ export function RequestAccess() {
     }
 
     setStatus("sending")
-    // No backend wired up yet. Swap for your form endpoint or Calendly handoff.
-    window.setTimeout(() => setStatus("sent"), 650)
+
+    // Delivered by Web3Forms (no backend). One submission per recipient key,
+    // so every inbox in forms.recipients gets a copy. Config: content/site.ts.
+    const form = e.currentTarget
+    const payloads = forms.recipients.map((recipient) => {
+      const body = new FormData(form)
+      body.append("access_key", recipient.accessKey)
+      body.append("subject", forms.subject)
+      body.append("from_name", `${brand.name} — request access`)
+      return body
+    })
+
+    const results = await Promise.all(
+      payloads.map((body) =>
+        fetch("https://api.web3forms.com/submit", {
+          method: "POST",
+          headers: { Accept: "application/json" },
+          body,
+        })
+          .then((res) => res.json())
+          .then((json: { success?: boolean }) => json.success === true)
+          .catch(() => false)
+      )
+    )
+
+    setStatus(results.every(Boolean) ? "sent" : "error")
   }
 
   return (
@@ -144,6 +170,16 @@ export function RequestAccess() {
               noValidate
               className="grid gap-4 self-center"
             >
+              {/* Honeypot: real users never see or fill this; bots that tick
+                  it are silently dropped by Web3Forms. */}
+              <input
+                type="checkbox"
+                name="botcheck"
+                tabIndex={-1}
+                autoComplete="off"
+                aria-hidden="true"
+                className="hidden"
+              />
               <div className="grid gap-4 sm:grid-cols-2">
                 <Field
                   name="name"
@@ -192,6 +228,21 @@ export function RequestAccess() {
                   className={cn(inputTone, "h-auto min-h-[88px] resize-y py-3")}
                 />
               </div>
+
+              {status === "error" ? (
+                <div
+                  role="alert"
+                  className="flex items-start gap-3 rounded-[10px] border border-signal/40 bg-signal/10 p-4"
+                >
+                  <Icon
+                    name="triangle-alert"
+                    className="mt-0.5 size-4 shrink-0 text-signal"
+                  />
+                  <span className="text-small text-white/75">
+                    {finalCta.errorBody}
+                  </span>
+                </div>
+              ) : null}
 
               <div className="mt-1 flex flex-wrap items-center gap-4">
                 <Button
