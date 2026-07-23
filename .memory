@@ -66,6 +66,13 @@ Separate from the product app at `/Users/pranavkumar/inboxrow` (Next.js,
    Volume and cost numbers ARE the pitch. **Never imply warm-up can be
    skipped**; the differentiator is volume per warmed mailbox.
 
+9. **No Google/Workspace/Gmail references in copy (July 2026).** The pitch was
+   genericized to "your own email / your own mailboxes"; limits are phrased as
+   "your provider's limit". Enforced across `site.ts`, `index.html` meta, and
+   the inline strings in `cost.tsx` / `volume.tsx`. Don't reintroduce the
+   provider name when editing copy (the product app is still Gmail-based;
+   that's internal, not a marketing claim).
+
 ---
 
 ## STACK & STRUCTURE
@@ -154,11 +161,14 @@ variant) and is worth fixing there too.
   650ms round trip then shows the success panel. Point it at a form endpoint
   or Calendly handoff — marked with a `// No backend wired up yet` comment.
 - `#privacy`, `#contact`, and "Book 15 min" are placeholder anchors.
-- **Numbers to verify before publishing:** Google Workspace price/seat, domain
+- **Numbers to verify before publishing:** mailbox-hosting price/seat, domain
   cost, the 1,500/day safe cap, and **inboxrow's own price — the copy never
   states it.**
-- The "~85% less" badge in the cost section is derived from the $1,500 vs $230
-  figures, not from the source copy. Confirm you're happy claiming it.
+- The cost panel now claims **~$1,500 vs ~$150, "~90% less"** (footnote:
+  domains ~$12/yr + hosting ~$4-6/mailbox/mo; ours at $4, theirs at $6). This
+  was widened per owner request in July 2026 from $230 / "~85% less". Verify
+  before publishing. The $150 headline is hard-coded in `cost.tsx`, the table
+  row lives in `site.ts`.
 - The hero inbox artifact uses invented correspondents and is labelled
   "Illustrative". **Better option: rebuild it from the real app UI** (RowMeter
   / funnel / tables) — that would remove the last fabricated element.

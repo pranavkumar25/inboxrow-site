@@ -31,13 +31,13 @@ export function Cost() {
         <div className="relative border-t border-hairline p-7 sm:border-t-0 sm:border-l lg:p-9">
           <p className="tag normal-case text-accent-700">inboxrow</p>
           <p className="tnum mt-4 flex flex-wrap items-baseline gap-x-4 text-stat leading-none font-semibold tracking-[-0.045em]">
-            ~$230
+            ~$150
             <span className="tag rounded-full border border-accent-500/40 px-2.5 py-1.5 text-accent-700">
-              ~85% less
+              ~90% less
             </span>
           </p>
           <p className="mt-3 text-body text-muted-foreground">
-            infrastructure per year. The software rides on your Google setup.
+            infrastructure per year. The software rides on your own email setup.
           </p>
         </div>
       </div>

@@ -9,8 +9,8 @@ export function Volume() {
         {volume.heading}
       </Heading>
       <Lede className="mt-7">
-        A warmed Workspace mailbox sends at Google’s own limit. Ours is set to a
-        safe{" "}
+        A warmed mailbox of your own sends at your provider’s real limit. Ours
+        is set to a safe{" "}
         <strong className="font-semibold text-foreground">1,500/day</strong>,
         which is 30× what shared-infra tools recommend.
       </Lede>

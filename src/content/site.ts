@@ -11,7 +11,7 @@
 export const meta = {
   title: "inboxrow: cold email that lands in the inbox",
   description:
-    "Send cold email from your own Google Workspace at real volume. Better inbox placement, a fraction of the domains, a fraction of the cost. Request access.",
+    "Send cold email from your own mailboxes at real volume. Better inbox placement, a fraction of the domains, a fraction of the cost. Request access.",
 } as const
 
 export const brand = {
@@ -31,16 +31,16 @@ export const nav = [
 export const hero = {
   eyebrow: "Cold email, done right",
   headline: ["Earn a row in the", "inbox."],
-  sub: "Cold email from your own Google Workspace mailboxes. Real inbox placement, real volume, without a rack of domains and tools.",
+  sub: "Cold email from your own mailboxes. Real inbox placement, real volume, without a rack of domains and tools.",
   secondaryCta: "See how it works",
-  note: "Runs on warmed Workspace domains you control.",
+  note: "Runs on warmed domains you control.",
 } as const
 
 /** Fake inbox rows for the hero visual. Decorative only, so aria-hidden. */
 export const inboxPreview = [
   {
     initials: "IR",
-    from: "You (via your Workspace)",
+    from: "You (via your own mailbox)",
     subject: "Quick question about your Q3 outbound plan",
     time: "9:02",
     live: true,
@@ -71,7 +71,7 @@ export const inboxPreview = [
 export const valueStrip = [
   {
     icon: "mail",
-    title: "Native Gmail sending",
+    title: "Native sending, from your email",
     body: "Your mailbox, your reputation. Not a shared relay.",
   },
   {
@@ -115,14 +115,14 @@ export const problem = {
 } as const
 
 export const different = {
-  eyebrow: "Send cold email from Gmail",
+  eyebrow: "Send cold email from your own mailbox",
   heading: "inboxrow sends the way a person sends.",
-  body: "Native, from your own warmed Google Workspace mailbox, so it lands in the inbox, at volume Google actually allows.",
+  body: "Native, from your own warmed mailbox, so it lands in the inbox, at volume your provider actually allows.",
   cards: [
     {
       icon: "shield-check",
       title: "Real deliverability",
-      body: "Mail leaves your Gmail, not a shared pool. Your domain, your sending history, your reputation.",
+      body: "Mail leaves your own mailbox, not a shared pool. Your domain, your sending history, your reputation.",
     },
     {
       icon: "bar-chart",
@@ -138,9 +138,9 @@ export const different = {
 } as const
 
 export const volume = {
-  eyebrow: "Google Workspace cold email volume",
+  eyebrow: "Cold email volume",
   heading: "Deliverability gets you opened. Volume gets you pipeline.",
-  body: "A warmed Workspace mailbox sends at Google’s own limit. Ours is set to a safe 1,500/day, which is 30× what shared-infra tools recommend.",
+  body: "A warmed mailbox of your own sends at your provider’s real limit. Ours is set to a safe 1,500/day, which is 30× what shared-infra tools recommend.",
   emphasis: "1,500/day",
   caption: "What it takes to send 1,000 emails a day",
   columns: ["To send 1,000/day", "Other tools", "inboxrow"],
@@ -166,17 +166,18 @@ export const cost = {
     {
       label: "Infra / year",
       others: "~$1,500",
-      ours: "~$230",
-      badge: "~85% less",
+      ours: "~$150",
+      badge: "~90% less",
     },
     {
       label: "Software fee",
       others: "On top, per mailbox",
-      ours: "Rides on your Google setup",
+      ours: "Rides on your own email setup",
       badge: null,
     },
   ],
-  footnote: "Math: domains ~$12/yr each + Google Workspace ~$6/mailbox/mo.",
+  footnote:
+    "Math: domains ~$12/yr each + mailbox hosting ~$4 to $6/mailbox/mo. Other tools stack a per-mailbox software fee on top.",
 } as const
 
 export const howItWorks = {
@@ -200,16 +201,16 @@ export const howItWorks = {
 
 export const features = {
   eyebrow: "Inbox placement",
-  heading: "Controls that keep you inside Google’s limits.",
+  heading: "Controls that keep you inside your provider’s limits.",
   items: [
     {
       icon: "mail",
-      title: "Sends from your Gmail",
-      body: "Your Workspace mailbox, best inbox placement.",
+      title: "Sends from your own email",
+      body: "Your own mailbox, best inbox placement.",
     },
     {
       icon: "zap",
-      title: "Full Workspace limit",
+      title: "Full mailbox limit",
       body: "Send at 1,500/day, not a throttled ~50.",
     },
     {
@@ -282,7 +283,7 @@ export const faq = {
     },
     {
       q: "Do I send from my main company domain?",
-      a: "No. You use dedicated Google Workspace domains, separate from your primary, so your main reputation is never at risk. Don’t have them? We’ll help you set them up.",
+      a: "No. You use dedicated sending domains, separate from your primary, so your main reputation is never at risk. Don’t have them? We’ll help you set them up.",
     },
     {
       q: "Do I need to warm up the mailboxes?",
@@ -294,7 +295,7 @@ export const faq = {
     },
     {
       q: "How many emails a day?",
-      a: "Up to 1,500/day per warmed mailbox (safe side of Google’s limit). New accounts start lower and ramp up.",
+      a: "Up to 1,500/day per warmed mailbox (safe side of your provider’s limit). New accounts start lower and ramp up.",
     },
     {
       q: "Can I turn off tracking?",
@@ -302,7 +303,7 @@ export const faq = {
     },
     {
       q: "What do I need to start?",
-      a: "Dedicated Workspace domains (warmed, or ready to warm), your list, and your copy. We’ll walk you through setup on a quick call.",
+      a: "Dedicated sending domains (warmed, or ready to warm), your list, and your copy. We’ll walk you through setup on a quick call.",
     },
   ],
 } as const
@@ -318,7 +319,7 @@ export const finalCta = {
 } as const
 
 export const footer = {
-  blurb: "Earn a row in the inbox. Cold email from your own Google Workspace.",
+  blurb: "Earn a row in the inbox. Cold email from your own mailboxes.",
   links: [
     { label: "How it works", href: "#how-it-works" },
     { label: "Volume", href: "#volume" },

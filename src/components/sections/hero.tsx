@@ -62,7 +62,7 @@ export function Hero() {
 }
 
 /**
- * The product in one frame: a real Gmail row is what the whole page is
+ * The product in one frame: a real inbox row is what the whole page is
  * selling, so the hero shows one landing rather than an abstract graphic.
  */
 function InboxArtifact() {
