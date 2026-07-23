@@ -1,6 +1,6 @@
 /**
  * Single source of truth for landing-page copy.
- * Mirrors InboxRow-Landing-Copy.md. Edit here, not in the components.
+ * Edit here, not in the components.
  *
  * Copy rules carried over from the brief:
  *  · Every CTA is "Request access" (invite-only, never "Sign up").
@@ -50,11 +50,11 @@ export const forms = {
   recipients: [
     {
       email: "pranav.kumar@inboxrow.com",
-      accessKey: "YOUR_WEB3FORMS_ACCESS_KEY_FOR_INBOXROW",
+      accessKey: "YOUR_WEB3FORMS_ACCESS_KEY",
     },
     {
       email: "pk@pranavkumar.co",
-      accessKey: "YOUR_WEB3FORMS_ACCESS_KEY_FOR_PRANAVKUMAR",
+      accessKey: "YOUR_WEB3FORMS_ACCESS_KEY",
     },
   ],
 } as const

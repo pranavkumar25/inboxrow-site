@@ -8,7 +8,7 @@ Dir `/Users/pranavkumar/Downloads/inboxrow-site`. GitHub `pranavkumar25/inboxrow
 (**PUBLIC**), branch `main`. gh CLI logged in as `pranavkumar25`.
 Dev: `npm run dev` (has been running on :5199). Build: `npm run build` → `dist/`.
 
-Source copy: `~/Downloads/InboxRow-Landing-Copy.md`. Palette PDF:
+Source copy: the landing-copy brief in `~/Downloads/`. Palette PDF:
 `~/Desktop/inboxrow-palette.pdf`. Brand SVGs came from
 `~/Desktop/inboxrow logo.svg` and `~/Desktop/inboxrow icon:favicon.svg`.
 
@@ -19,7 +19,7 @@ Separate from the product app at `/Users/pranavkumar/inboxrow` (Next.js,
 
 ## LOCKED DECISIONS
 
-1. **Brand name is always lowercase.** `inboxrow`, never `InboxRow`. Labels
+1. **Brand name is always lowercase.** `inboxrow`, never capitalised. Labels
    use `text-transform: uppercase`, so anywhere the name sits inside one it
    opts out with `normal-case` (footer copyright, comparison-table headers,
    the cost panel label). Enforced across copy, `<title>`, and meta.

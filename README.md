@@ -1,6 +1,6 @@
 # inboxrow landing page
 
-Single-page marketing site for inboxrow, built from `InboxRow-Landing-Copy.md`.
+Single-page marketing site for inboxrow.
 
 **Stack:** React 19 · TypeScript · Vite · Tailwind CSS v4 · shadcn/ui (Radix) · Heroicons
 
@@ -23,7 +23,7 @@ anchors. The only contrast moment on the page is the ink request-access panel.
 
 ## Brand
 
-The wordmark is **always lowercase**: `inboxrow`, never `InboxRow`. Labels
+The wordmark is **always lowercase**: `inboxrow`, never capitalised. Labels
 carry `text-transform: uppercase`, so anywhere the brand name appears inside
 one it opts out with `normal-case` (see `site-footer.tsx`, the table headers).
 
