@@ -320,13 +320,14 @@ export const finalCta = {
 
 export const footer = {
   blurb: "Earn a row in the inbox. Cold email from your own mailboxes.",
+  // "/#anchor" instead of "#anchor" so links also work from /privacy and /terms.
   links: [
-    { label: "How it works", href: "#how-it-works" },
-    { label: "Volume", href: "#volume" },
-    { label: "Cost", href: "#cost" },
-    { label: "FAQ", href: "#faq" },
-    { label: "Request access", href: "#request-access" },
-    { label: "Privacy", href: "#privacy" },
-    { label: "Contact", href: "#contact" },
+    { label: "How it works", href: "/#how-it-works" },
+    { label: "Volume", href: "/#volume" },
+    { label: "Cost", href: "/#cost" },
+    { label: "FAQ", href: "/#faq" },
+    { label: "Request access", href: "/#request-access" },
+    { label: "Privacy", href: "/privacy" },
+    { label: "Terms", href: "/terms" },
   ],
 } as const

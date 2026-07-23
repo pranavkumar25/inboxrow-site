@@ -11,8 +11,19 @@ import { Audience } from "@/components/sections/audience"
 import { Faq } from "@/components/sections/faq"
 import { RequestAccess } from "@/components/sections/request-access"
 import { SiteFooter } from "@/components/sections/site-footer"
+import { LegalPage } from "@/components/legal-page"
+import { privacy, terms } from "@/content/legal"
 
 export default function App() {
+  /**
+   * The site is one landing page plus two legal pages, so a pathname check
+   * beats a router dependency. Requires the host to serve index.html for
+   * unknown paths (see public/_redirects and vercel.json).
+   */
+  const path = window.location.pathname.replace(/\/+$/, "") || "/"
+  if (path === privacy.path) return <LegalPage doc={privacy} />
+  if (path === terms.path) return <LegalPage doc={terms} />
+
   return (
     <>
       <a
